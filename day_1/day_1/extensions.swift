@@ -13,4 +13,12 @@ extension Array {
         }
         return acc
     }
+    
+    func betterMap<T>(iterator: (_ nextItem: T, _ index: Int, _ allItems: Array) -> T) -> [T] {
+        var results: [T] = []
+        for (index, element) in self.enumerated() {
+            results.append(iterator(element as! T, index, self))
+        }
+        return results
+    }
 }
