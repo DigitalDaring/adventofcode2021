@@ -8,9 +8,23 @@ void main(List<String> arguments) async {
     nav_calc.getNavigationFromFileline(line)
   ).toList();
 
+  firstStep(allNavigation);
+  secondStep(allNavigation);
+}
+
+void firstStep(List<NavigationModel> allNavigation) {
   var totalHorizontal = nav_calc.consolidateNavigation(allNavigation, navAxis.horizontal);
   var totalVertical = nav_calc.consolidateNavigation(allNavigation, navAxis.vertical);
-  
+
+  var result = totalVertical * totalHorizontal;
+  print(result);
+}
+
+void secondStep(List<NavigationModel> allNavigation) {
+  var results = nav_calc.convertVectorsToAbsoluteDirections(allNavigation);
+  var totalHorizontal = nav_calc.consolidateNavigation(results, navAxis.vertical);
+  var totalVertical = nav_calc.consolidateNavigation(results, navAxis.horizontal);
+
   var result = totalVertical * totalHorizontal;
   print(result);
 }

@@ -30,4 +30,41 @@ void main() {
     var result = nav_calc.consolidateNavigation(testNavs, navAxis.vertical);
     expect(result, equals(410));
   });
+
+  test('it should convert vector navigation to absolute navigation', () {
+    var testNavs = [  
+      NavigationModel(navAxis.horizontal, 5),
+      NavigationModel(navAxis.vertical, 5),
+      NavigationModel(navAxis.horizontal, 8),
+      NavigationModel(navAxis.vertical, -3),
+      NavigationModel(navAxis.vertical, 8),
+      NavigationModel(navAxis.horizontal, 2)
+    ];
+
+    var results = nav_calc.convertVectorsToAbsoluteDirections(testNavs);
+
+    expect(results[0], equals(NavigationModel(navAxis.horizontal, 5)));
+    expect(results[1], equals(NavigationModel(navAxis.horizontal, 8)));
+    expect(results[2], equals(NavigationModel(navAxis.vertical, 40)));
+    expect(results[3], equals(NavigationModel(navAxis.horizontal, 2)));
+    expect(results[4], equals(NavigationModel(navAxis.vertical, 20)));
+  });
+
+  test('it should perform entire vector navigation by combining step 2 and step 1', () {
+    var testNavs = [  
+      NavigationModel(navAxis.horizontal, 5),
+      NavigationModel(navAxis.vertical, 5),
+      NavigationModel(navAxis.horizontal, 8),
+      NavigationModel(navAxis.vertical, -3),
+      NavigationModel(navAxis.vertical, 8),
+      NavigationModel(navAxis.horizontal, 2)
+    ];
+
+    var results = nav_calc.convertVectorsToAbsoluteDirections(testNavs);
+    var verticalResult = nav_calc.consolidateNavigation(results, navAxis.vertical);
+    var horizontalResult = nav_calc.consolidateNavigation(results, navAxis.horizontal);
+    
+    expect(horizontalResult, equals(15));
+    expect(verticalResult, equals(60));
+  });
 }
