@@ -1,5 +1,6 @@
 import unittest
 from bit_math import *
+from models import FilteredLine
 from read_file import get_lines_from_file
 
 class Tests(unittest.TestCase):
@@ -31,3 +32,24 @@ class Tests(unittest.TestCase):
   def test_get_big_epsilon_rate(self):
     epsilon_rate = get_epsilon_rate(2981, 0b111111111111)
     self.assertEqual(epsilon_rate, 1114)
+
+  def test_filter_by_leftmost_bit(self):
+    test_list = map(lambda num: FilteredLine(num, num), self.numberInputs)
+    result = filter_by_leftmost_bit(test_list, "1", 5)
+    self.assertEqual(len(result), 7)
+  
+  def test_chop_off_amount(self):
+    test_to_chop = FilteredLine(9, 9)
+    result = chop_off(test_to_chop, 8)
+    formatted_result = "{0:b}".format(result.clipped).zfill(3)
+    self.assertEqual(result.clipped, 1)
+    self.assertEqual(formatted_result, "001")
+
+  def test_dont_chop_off_to_negative_amount(self):
+    test_to_chop = FilteredLine(1, 1)
+    result = chop_off(test_to_chop, 8)
+    formatted_result = "{0:b}".format(result.clipped).zfill(3)
+    self.assertEqual(result.clipped, 1)
+    self.assertEqual(formatted_result, "001")
+
+  
