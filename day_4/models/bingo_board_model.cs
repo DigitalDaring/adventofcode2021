@@ -43,6 +43,7 @@ namespace AdventOfCode.models {
                 allNumbers.AddRange(row);
             });
             var nonWinningNumbers = allNumbers.Where((number) => !NumbersSoFar.Contains(number));
+            Console.WriteLine($"Found {nonWinningNumbers.Count()} non winning numbers on this board");
             var sumOfWin = nonWinningNumbers.Sum();
             return sumOfWin * winningNumber;
         }
