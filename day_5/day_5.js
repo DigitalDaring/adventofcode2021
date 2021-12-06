@@ -1,21 +1,25 @@
 import {
     getInputs,
     parseLines,
-    convertLinesToArrays
+    convertStraightLinesToArrays,
+    convertDiagonalLinesToArrays
 } from './helpers.js';
 
-const allLines = getInputs();
+const allLines = getInputs('inputs.txt');
 const allVentLines = parseLines(allLines);
 const straightVentLines = allVentLines.filter(line => line.isAStraightLine);
+const diagonalVentLines = allVentLines.filter(line => !line.isAStraightLine);
 
-
-const pointsWithStraightVents = convertLinesToArrays(straightVentLines);
-
+const pointsWithStraightVents = convertStraightLinesToArrays(straightVentLines);
+const pointsWithDiagonalVents = convertDiagonalLinesToArrays(diagonalVentLines);
 const allStraightPoints = pointsWithStraightVents.reduce((acc, cur) => {
     return [...acc, ...cur];
 }, []);
+const allDiagonalPoints = pointsWithDiagonalVents.reduce((acc, cur) => {
+    return [...acc, ...cur];
+}, []);
 
-const allPoints = [...allStraightPoints];
+const allPoints = [...allStraightPoints, ...allDiagonalPoints];
 
 const blankMap = [];
 for (let i = 0; i < 1000; i++) {
@@ -37,13 +41,6 @@ allPoints.forEach(point => {
     if(blankMap[x][y] === 2) {
         overlappingPoints.push([x, y]);
     }
-});
-
-overlappingPoints.forEach(overlap => {
-    const x = overlap[0];
-    const y = overlap[1];
-    var total = blankMap[x][y];
-    console.log(`${x}, ${y} : ${total}\r\n`);
 });
 
 console.log(overlappingPoints.length);

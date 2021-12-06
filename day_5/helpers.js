@@ -1,8 +1,8 @@
 import fs from 'fs';
 
-const getInputs = () => {
+const getInputs = (fileName) => {
     try {
-        const data = fs.readFileSync('inputs.txt', 'utf8')
+        const data = fs.readFileSync(fileName, 'utf8')
         const allLines = data.split('\n');
         return allLines;
       } catch (err) {
@@ -19,7 +19,7 @@ const parseLines = (allLines) => {
         const changeX = endCoords[0] - startCoords[0];
         const changeY = endCoords[1] - startCoords[1];
 
-        if(changeX < 0 || changeY < 0) {
+        if(isAStraightLine && (changeX < 0 || changeY < 0)) {
             const flipCoords = endCoords;
             endCoords = startCoords;
             startCoords = flipCoords;
@@ -35,7 +35,7 @@ const parseLines = (allLines) => {
     });
 };
 
-const convertLinesToArrays = (ventLines) => {
+const convertStraightLinesToArrays = (ventLines) => {
     const arrayResults = ventLines.map(line => {
         const thisArray = [];
         const changingSide = line.theRise === 0 ? 0 : 1;
@@ -46,6 +46,24 @@ const convertLinesToArrays = (ventLines) => {
             toAdd[changingSide] += i;
             thisArray.push(toAdd);
         }
+        
+        return thisArray;
+    });
+    return arrayResults;
+};
+
+const convertDiagonalLinesToArrays = (ventLines) => {
+    const arrayResults = ventLines.map(line => {
+        const thisArray = [];
+
+        const amountToChange = Math.abs(line.theRise);
+        for(let i = 0; i <= amountToChange; i++) {
+            const newPoint = [...line.start];
+            const newX = line.theRun < 0 ? newPoint[0] - i : newPoint[0] + i;
+            const newY = line.theRise < 0 ? newPoint[1] - i : newPoint[1] + i;
+            thisArray.push([newX, newY]);
+        }
+
         return thisArray;
     });
     return arrayResults;
@@ -54,5 +72,6 @@ const convertLinesToArrays = (ventLines) => {
 export {
     getInputs,
     parseLines,
-    convertLinesToArrays
+    convertStraightLinesToArrays,
+    convertDiagonalLinesToArrays
 }
