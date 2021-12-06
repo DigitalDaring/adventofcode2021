@@ -11,7 +11,7 @@ const getInputs = () => {
 };
 
 const parseLines = (allLines) => {
-    const parsedLines = allLines.map(line => {
+    return allLines.map(line => {
         const halves = line.split(' -> ');
         let startCoords = halves[0].split(',').map(str => parseInt(str));
         let endCoords = halves[1].split(',').map(str => parseInt(str));
@@ -33,8 +33,6 @@ const parseLines = (allLines) => {
             isAStraightLine
         };
     });
-
-    return parsedLines.filter(line => line.isAStraightLine);
 };
 
 const convertLinesToArrays = (ventLines) => {

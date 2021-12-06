@@ -5,12 +5,17 @@ import {
 } from './helpers.js';
 
 const allLines = getInputs();
-const ventLines = parseLines(allLines);
-const pointsWithVents = convertLinesToArrays(ventLines);
+const allVentLines = parseLines(allLines);
+const straightVentLines = allVentLines.filter(line => line.isAStraightLine);
 
-const allPoints = pointsWithVents.reduce((acc, cur) => {
+
+const pointsWithStraightVents = convertLinesToArrays(straightVentLines);
+
+const allStraightPoints = pointsWithStraightVents.reduce((acc, cur) => {
     return [...acc, ...cur];
 }, []);
+
+const allPoints = [...allStraightPoints];
 
 const blankMap = [];
 for (let i = 0; i < 1000; i++) {
